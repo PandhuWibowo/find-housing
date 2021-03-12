@@ -117,7 +117,31 @@
                       </button>
                     </div>
                     <div class="modal-body">
-
+                      <form role="form">
+                        <div class="card-body">
+                          <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" class="form-control" id="nama" placeholder="Nama">
+                          </div>
+                          <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password">
+                          </div>
+                          <div class="form-group">
+                            <label for="no_telp">No. Telpon</label>
+                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
+                          </div>
+                          <div class="form-group">
+                            <label for="jabatan">Jabatan</label>
+                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan">
+                          </div>
+                          <div class="form-group">
+                            <label>Alamat</label>
+                            <textarea class="form-control" rows="3" placeholder="Alamat"></textarea>
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </form>
                     </div>
                     <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -145,8 +169,8 @@
                     <td>1234567890</td>
                     <td>Super Admin</td>
                     <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
+                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-toggle="modal" data-target="#modal-xl-edit">Ubah</button>
+                      <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-xl-remove">Hapus</button>
                     </td>
                   </tr>
                   <tr>
@@ -215,6 +239,68 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="modal fade" id="modal-xl-edit">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ubah User</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form role="form">
+                        <div class="card-body">
+                          <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" class="form-control" id="nama" placeholder="Nama" value="John Doe">
+                          </div>
+                          <div class="form-group">
+                            <label for="no_telp">No. Telpon</label>
+                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon" value="1234567890">
+                          </div>
+                          <div class="form-group">
+                            <label for="jabatan">Jabatan</label>
+                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan" value="Super Admin">
+                          </div>
+                          <div class="form-group">
+                            <label>Alamat</label>
+                            <textarea class="form-control" rows="3" placeholder="Alamat">Jl. Pahlawan Gang Merdeka</textarea>
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      <button type="button" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <div class="modal fade" id="modal-xl-remove">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Hapus User</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Anda yakin ingin menghapusnya?
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      <button type="button" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
             </div>
             <!-- /.card -->
           </div>
