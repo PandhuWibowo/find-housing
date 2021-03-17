@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -39,10 +40,10 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="{{ Session::get('id_user') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -68,6 +69,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/peta/cari-alamat" class="nav-link">
+              <i class="nav-icon fas fa-street-view"></i>
+              <p>Cari Alamat</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/signout">
               <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
             </a>
@@ -86,12 +93,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Warga</h1>
+            <h1>Anggota Keluarga</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              <li class="breadcrumb-item active">Warga</li>
+              <li class="breadcrumb-item active">Anggota Keluarga</li>
             </ol>
           </div>
         </div>
@@ -110,78 +117,71 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="no_kk">No. Kartu Keluarga</label>
-                    <input type="text" class="form-control" id="no_kk" placeholder="No. Kartu Keluarga">
+                    <input type="text" class="form-control" id="no_kk" placeholder="No. Kartu Keluarga" value="{{ $kartuKeluarga->id_kk }}" readonly>
                   </div>
                   <div class="form-group">
                     <label for="nik_kepala_keluarga">NIK Kepala Keluarga</label>
-                    <input type="text" class="form-control" id="nik_kepala_keluarga" placeholder="NIK Kepala Keluarga">
-                  </div>
-                  <div class="form-group">
-                    <label for="nama_kepala_keluarga">Nama Kepala Keluarga</label>
-                    <input type="text" class="form-control" id="nama_kepala_keluarga" placeholder="Nama Kepala Keluarga">
-                  </div>
-                  <div class="form-group">
-                    <label for="domisili">Domisili</label>
-                    <input type="text" class="form-control" id="domisili" placeholder="Domisili">
+                    <input type="text" class="form-control" id="nik_kepala_keluarga" placeholder="NIK Kepala Keluarga" value="{{ $kartuKeluarga->nik_kepala_keluarga }}" readonly>
                   </div>
                   <div class="form-group">
                     <label for="status_tempat_tinggal">Status Tempat Tinggal</label>
-                    <input type="text" class="form-control" id="status_tempat_tinggal" placeholder="Status Tempat Tinggal">
+                    <input type="text" class="form-control" id="status_tempat_tinggal" placeholder="Status Tempat Tinggal" readonly value="{{ $kartuKeluarga->status_tempat_tinggal }}">
                   </div>
-                </div>
-                <div class="card-body">
-                  <button class="btn btn-info">Tambah Baru</button>
+                  <div class="form-group">
+                    <label for="domisili_kartu_keluarga">Domisili</label>
+                    <input type="text" class="form-control" id="domisili_kartu_keluarga" disabled placeholder="Domisili" value="{{ $kartuKeluarga->domisili }}">
+                  </div>
                 </div>
                 <div class="card-body">
                   <div class="form-group">
                     <label for="nik">NIK</label>
-                    <input type="text" class="form-control" id="nik" placeholder="NIK">
+                    <input type="text" class="form-control" id="nik" placeholder="NIK" value="{{ $warga->nik }}" readonly>
                   </div>
                   <div class="form-group">
                     <label for="nama">Nama</label>
-                    <input type="text" class="form-control" id="nama" placeholder="Nama">
+                    <input type="text" class="form-control" id="nama" placeholder="Nama" value="{{ $warga->nama }}">
                   </div>
                   <div class="form-group">
-                    <label>Alamat</label>
-                    <textarea class="form-control" rows="3" placeholder="Alamat" id="alamat"></textarea>
+                    <label for="alamat">Alamat</label>
+                    <textarea class="form-control" rows="3" placeholder="Alamat" id="alamat">{{ $warga->alamat }}</textarea>
                   </div>
                   <div class="form-group">
-                    <label>Tanggal Lahir</label>
-                    <input type="text" class="form-control" id="tanggal_lahir" placeholder="Tanggal Lahir">
+                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="tanggal_lahir" placeholder="Tanggal Lahir" value="{{ $warga->tgl_lahir }}">
                   </div>
                   <div class="form-group">
                     <label for="no_telp">No. Telpon</label>
-                    <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
+                    <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon" value="{{ $warga->no_telp }}">
                   </div>
                   <div class="form-group">
                     <label for="pendidikan">Pendidikan</label>
-                    <input type="text" class="form-control" id="pendidikan" placeholder="Pendidikan">
+                    <input type="text" class="form-control" id="pendidikan" placeholder="Pendidikan" value="{{ $warga->pendidikan }}">
                   </div>
                   <div class="form-group">
                     <label for="pekerjaan">Pekerjaan</label>
-                    <input type="text" class="form-control" id="pekerjaan" placeholder="Pekerjaan">
-                  </div>
-                  <div class="form-group">
-                    <label for="domisili">Domisili</label>
-                    <input type="text" class="form-control" id="domisili" placeholder="Domisili">
+                    <input type="text" class="form-control" id="pekerjaan" placeholder="Pekerjaan" value="{{ $warga->pekerjaan }}">
                   </div>
                   <div class="form-group">
                     <label for="status_keluarga">Status Keluarga</label>
-                    <input type="text" class="form-control" id="status_keluarga" placeholder="Status Keluarga">
+                    <input type="text" class="form-control" id="status_keluarga" placeholder="Status Keluarga" value="{{ $warga->detil_kk[0]->status_keluarga }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="domisili">Domisili</label>
+                    <input type="text" class="form-control" id="domisili" placeholder="Domisili" value="{{ $warga->domisili }}">
                   </div>
                   <div class="form-group">
                     <label for="status_pernikahan">Status Pernikahan</label>
                     <select class="form-control" id="status_pernikahan">
-                      <option>Kawin</option>
-                      <option>Belum Kawin</option>
-                      <option>Cerai Hidup</option>
-                      <option>Cerai Mati</option>
+                      <option @if($warga->status_pernikahan === 'Kawin') selected @endif>Kawin</option>
+                      <option @if($warga->status_pernikahan === 'Belum Kawin') selected @endif>Belum Kawin</option>
+                      <option @if($warga->status_pernikahan === 'Cerai Hidup') selected @endif>Cerai Hidup</option>
+                      <option @if($warga->status_pernikahan === 'Cerai Mati') selected @endif>Cerai Mati</option>
                     </select>
                   </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Simpan</button>
+                  <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
                 </div>
               </form>
             </div>
@@ -225,5 +225,114 @@
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
+<script>
+  function csrfProtection() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    $("#btn-save").on('click', function(e) {
+      e.preventDefault()
+
+      const noKK = $('#no_kk').val()
+      const nik = $('#nik').val()
+      const nama = $("#nama").val()
+      const noTelp = $("#no_telp").val()
+      const alamat = $("textarea#alamat").val()
+      const tanggalLahir = $('#tanggal_lahir').val()
+      const pendidikan = $('#pendidikan').val()
+      const pekerjaan = $("#pekerjaan").val()
+      const statusKeluarga = $('#status_keluarga').val()
+      const statusPernikahan = $('#status_pernikahan').val()
+      const domisili = $('#domisili').val()
+
+      try {
+        csrfProtection()
+        if (!noKK || typeof noKK !== 'string') {
+          alert('No. Kartu Keluarga harus tidak boleh string kosong')
+          return
+        }
+        if (!domisili || typeof domisili !== 'string') {
+          alert('Domisili harus tidak boleh string kosong')
+          return
+        }
+        if (!nik || typeof nik !== 'string') {
+          alert('NIK harus tidak boleh string kosong')
+          return
+        }
+        if (!nama || typeof nama !== 'string') {
+          alert('Nama harus tidak boleh string kosong')
+          return
+        }
+        if (!noTelp || typeof noTelp !== 'string') {
+          alert('No Telepon harus tidak boleh string kosong')
+          return
+        }
+        if (!alamat || typeof alamat !== 'string') {
+          alert('Alamat harus tidak boleh string kosong')
+          return
+        }
+        if (!tanggalLahir || typeof tanggalLahir !== 'string') {
+          alert('Tanggal Lahir harus tidak boleh string kosong')
+          return
+        }
+        if (!pendidikan || typeof pendidikan !== 'string') {
+          alert('Pendidikan harus tidak boleh string kosong')
+          return
+        }
+        if (!pekerjaan || typeof pekerjaan !== 'string') {
+          alert('Pekerjaan harus tidak boleh string kosong')
+          return
+        }
+        if (!statusKeluarga || typeof statusKeluarga !== 'string') {
+          alert('Status Keluarga harus tidak boleh string kosong')
+          return
+        }
+        if (!statusPernikahan || typeof statusPernikahan !== 'string') {
+          alert('Status Pernikahan harus tidak boleh string kosong')
+          return
+        }
+        $.ajax({
+            url: `/warga/kartu-keluarga/${noKK}/ubah-anggota-keluarga/${nik}`,
+            type: 'PUT',
+            dataType: 'json',
+            async: true,
+            data: {
+              nama,
+              no_telp: noTelp,
+              alamat,
+              status_keluarga: statusKeluarga,
+              pendidikan,
+              pekerjaan,
+              tanggal_lahir: tanggalLahir,
+              status_pernikahan: statusPernikahan,
+              domisili
+            },
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 200) {
+                alert(response.message)
+                return window.location=`/warga/kartu-keluarga/${noKK}`
+              } else alert(response.message)
+              return
+            }
+          })
+      } catch (error) {
+        console.error(error)
+        alert(error)
+        return
+      }
+    })
+  })
+</script>
 </body>
 </html>

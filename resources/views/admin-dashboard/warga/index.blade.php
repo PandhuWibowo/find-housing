@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -39,10 +40,10 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -68,9 +69,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/signout">
-              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
+            <a href="/peta/cari-alamat" class="nav-link">
+              <i class="nav-icon fas fa-street-view"></i>
+              <p>Cari Alamat</p>
             </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>
@@ -105,8 +110,15 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
+                @if(Session::has('invalid_id'))
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Invalid No. Kartu Keluarga</strong> {{ Session::get('invalid_id') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                @endif
                 <a href="/warga/tambah-warga" class="btn btn-block btn-outline-primary btn-flat">Tambah Warga</a>
-                <a href="/peta/cari-alamat" class="btn btn-block btn-outline-primary btn-flat">Cari Alamat</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -115,95 +127,28 @@
                   <tr>
                     <th>No. Kartu Keluarga</th>
                     <th>NIK Kepala Keluarga</th>
-                    <th>Nama Kepala Keluarga</th>
                     <th>Status Tempat Tinggal</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Milik Sendiri</td>
-                      <td>
-                        <a class="btn btn-block btn-outline-secondary btn-flat" href="/warga/lihat-detil-warga">Lihat</a>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Ngontrak</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Milik Sendiri</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Ngontrak</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Milik Sendiri</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Milik Sendiri</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1234567890123456</td>
-                      <td>1341341284268987</td>
-                      <td>John Doe</td>
-                      <td>Ngontrak</td>
-                      <td>
-                        <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Lihat</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Domisili</button>
-                        <button type="button" class="btn btn-block btn-outline-info btn-flat">Update Status</button>
-                      </td>
-                    </tr>
+                    @foreach ($kartuKeluarga as $row)
+                      <tr>
+                        <td>{{ $row->id_kk }}</td>
+                        <td>{{ $row->nik_kepala_keluarga }}</td>
+                        <td>{{ $row->status_tempat_tinggal }}</td>
+                        <td>
+                          <a class="btn btn-block btn-outline-secondary btn-flat" href="/warga/kartu-keluarga/{{ $row->id_kk }}">Lihat</a>
+                          <a data-id_kk="{{ $row->id_kk }}" data-status_tempat_tinggal="{{ $row->status_tempat_tinggal }}" class="editStatusTempatTinggal btn btn-block btn-outline-info btn-flat">Ubah Status</a>
+                          <a data-id_kk="{{ $row->id_kk }}" data-domisili_kartu_keluarga="{{ $row->domisili }}" class="editDomisili btn btn-block btn-outline-info btn-flat">Ubah Domisili</a>
+                        </td>
+                      </tr>
+                    @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
                       <th>No. Kartu Keluarga</th>
                       <th>NIK Kepala Keluarga</th>
-                      <th>Nama Kepala Keluarga</th>
                       <th>Status Tempat Tinggal</th>
                       <th>Aksi</th>
                     </tr>
@@ -211,6 +156,66 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="modal fade" id="update-statusTempatTinggal">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ubah Status Tempat Tinggal</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form role="form">
+                      <div class="modal-body">
+                        <div class="card-body">
+                          <input type="hidden" name="ubahIdKK" id="ubahIdKK">
+                          <div class="form-group">
+                            <label for="nama">Status Tempat Tinggal</label>
+                            <input type="text" class="form-control" id="ubahStatusTempatTinggal" placeholder="Status Tempat Tinggal">
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-ubah-status">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <div class="modal fade" id="update-domisili">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ubah Domisili</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form role="form">
+                      <div class="modal-body">
+                        <div class="card-body">
+                          <input type="hidden" name="ubahIdKKDomisili" id="ubahIdKKDomisili">
+                          <div class="form-group">
+                            <label for="domisili">Domisili</label>
+                            <input type="text" class="form-control" id="ubahDomisili" placeholder="Domisili">
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-ubah-domisili">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
             </div>
             <!-- /.card -->
           </div>
@@ -269,6 +274,120 @@
       "responsive": true,
     });
   });
+</script>
+<script>
+  function csrfProtection() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  }
+  $(document).ready(function() {
+    $('.editStatusTempatTinggal').on('click', function() {
+      // Dari Data Table
+      const idKK = $(this).data('id_kk')
+      const statusTempatTinggal = $(this).data('status_tempat_tinggal')
+
+      // Ke Modal
+      $('#ubahStatusTempatTinggal').val(statusTempatTinggal)
+      $('#ubahIdKK').val(idKK)
+      const editModal = $('#update-statusTempatTinggal')
+      editModal.modal('show')
+    })
+
+    $('#btn-ubah-status').on('click', function(e) {
+      e.preventDefault()
+
+      const idKK = $('#ubahIdKK').val()
+      const statusTempatTinggal = $('#ubahStatusTempatTinggal').val()
+
+      try {
+        if (!idKK || typeof idKK !== 'string') alert('No. Kartu Keluarga harus tidak boleh string kosong')
+        if (!statusTempatTinggal || typeof statusTempatTinggal !== 'string') alert('Status Tempat Tinggal harus tidak boleh string kosong')
+
+        csrfProtection()
+        $.ajax({
+          url: `/warga/${idKK}/status-tempat-tinggal`,
+          type: 'PUT',
+          dataType: 'json',
+          async: true,
+          data: { status_tempat_tinggal: statusTempatTinggal },
+          error: function (err) {
+            console.error(err)
+            alert(err)
+            return
+          },
+          success: function (response) {
+            console.log(response)
+            if (response.status === 200) {
+              alert(response.message)
+              const editModal = $('#update-statusTempatTinggal')
+              editModal.modal('hide')
+              location.reload()
+            } else alert(response.message)
+            return
+          }
+        })
+      } catch (err) {
+        console.error(err)
+        alert(err)
+        return
+      }
+    })
+
+    $('.editDomisili').on('click', function() {
+      // Dari Data Table
+      const idKK = $(this).data('id_kk')
+      const domisili = $(this).data('domisili_kartu_keluarga')
+
+      // Ke Modal
+      $('#ubahDomisili').val(domisili)
+      $('#ubahIdKKDomisili').val(idKK)
+      const editModal = $('#update-domisili')
+      editModal.modal('show')
+    })
+
+    $('#btn-ubah-domisili').on('click', function(e) {
+      e.preventDefault()
+
+      const idKK = $('#ubahIdKKDomisili').val()
+      const domisili = $('#ubahDomisili').val()
+
+      try {
+        if (!idKK || typeof idKK !== 'string') alert('No. Kartu Keluarga harus tidak boleh string kosong')
+        if (!domisili || typeof domisili !== 'string') alert('Domisili harus tidak boleh string kosong')
+
+        csrfProtection()
+        $.ajax({
+          url: `/warga/${idKK}/domisili-kartu-keluarga`,
+          type: 'PUT',
+          dataType: 'json',
+          async: true,
+          data: { domisili },
+          error: function (err) {
+            console.error(err)
+            alert(err)
+            return
+          },
+          success: function (response) {
+            console.log(response)
+            if (response.status === 200) {
+              alert(response.message)
+              const editModal = $('#update-domisili')
+              editModal.modal('hide')
+              location.reload()
+            } else alert(response.message)
+            return
+          }
+        })
+      } catch (err) {
+        console.error(err)
+        alert(err)
+        return
+      }
+    })
+  })
 </script>
 </body>
 </html>

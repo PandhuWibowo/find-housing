@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -39,10 +40,10 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -68,9 +69,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/signout">
-              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
+            <a href="/peta/cari-alamat" class="nav-link">
+              <i class="nav-icon fas fa-street-view"></i>
+              <p>Cari Alamat</p>
             </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>
@@ -86,12 +91,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Warga</h1>
+            <h1>Detil Kartu Keluarga</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              <li class="breadcrumb-item active">Warga</li>
+              <li class="breadcrumb-item active">Detil Kartu Keluarga</li>
             </ol>
           </div>
         </div>
@@ -102,46 +107,81 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-12">
-            <div class="card">
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">No. Kartu Keluarga : {{ $id_kk }}</h3>
+              </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <form action="" role="form">
+              <!-- form start -->
+              <form role="form">
+                <div class="card-body">
                   <div class="form-group">
-                    <label for="cari_alamat">Cari Alamat</label>
-                    <input type="text" class="form-control" id="cari_alamat" placeholder="Cari Alamat">
-                  </div>
-                  <div class="form-group">
-                    <label for="domisili">Domisili</label>
-                    <select class="form-control" id="domisili">
-                      <option>Perumahan A</option>
-                      <option>Perumahan B</option>
-                      <option>Perumahan C</option>
-                      <option>Perumahan D</option>
-                    </select>
+                    <label for="nik_kepala_keluarga">NIK Kepala Keluarga</label>
+                    <input type="text" class="form-control" id="nik_kepala_keluarga" disabled placeholder="NIK Kepala Keluarga" value="{{ $anggota[0]->nik_kepala_keluarga }}">
                   </div>
                   <div class="form-group">
                     <label for="status_tempat_tinggal">Status Tempat Tinggal</label>
-                    <select class="form-control" id="status_tempat_tinggal">
-                      <option>Milik Sendiri</option>
-                      <option>Ngontrak</option>
-                    </select>
+                    <input type="text" class="form-control" id="status_tempat_tinggal" disabled placeholder="Status Tempat Tinggal" value="{{ $anggota[0]->status_tempat_tinggal }}">
                   </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Cari</button>
-              </div>
-              <!-- /.card-body -->
+                  <div class="form-group">
+                    <label for="domisili_kartu_keluarga">Domisili</label>
+                    <input type="text" class="form-control" id="domisili_kartu_keluarga" disabled placeholder="Domisili" value="{{ $anggota[0]->domisili }}">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </form>
             </div>
             <!-- /.card -->
           </div>
-          <!-- /.col -->
           <div class="col-12">
             <div class="card">
+              <div class="card-header">
+                @if(Session::has('invalid_id'))
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Invalid No. Kartu Keluarga</strong> {{ Session::get('invalid_id') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                @endif
+                <a href="/warga/kartu-keluarga/{{ $id_kk }}/tambah-anggota-keluarga" class="btn btn-block btn-outline-primary btn-flat">Tambah Anggota Keluarga</a>
+              </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div class="mapouter"><div class="gmap_canvas"><iframe width="1125" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.whatismyip-address.com"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:1125px;}</style><a href="https://google-map-generator.com"></a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:1125px;}</style></div></div>
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>NIK</th>
+                    <th>Nama</th>
+                    <th>No. Telepon</th>
+                    <th>Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($anggota as $row)
+                      @foreach($row->warga as $warga)
+                        <tr>
+                          <td>{{ $warga->nik }}</td>
+                          <td>{{ $warga->nama }}</td>
+                          <td>{{ $warga->no_telp }}</td>
+                          <td>
+                            <a href="/warga/kartu-keluarga/{{ $id_kk }}/ubah-anggota-keluarga/{{ $warga->nik }}" class="editAnggotaKeluarga btn btn-block btn-outline-secondary btn-flat">Ubah</a>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @endforeach
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>NIK</th>
+                      <th>Nama</th>
+                      <th>No. Telepon</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
               <!-- /.card-body -->
             </div>
@@ -185,5 +225,34 @@
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<script>
+  function csrfProtection() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  }
+  $(document).ready(function() {
+  })
+</script>
 </body>
 </html>

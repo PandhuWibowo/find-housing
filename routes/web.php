@@ -1,36 +1,52 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SignInController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WargaController;
+
+Route::get('/', function() {
+    return redirect('signin');
+});
 
 /**
  * Sign In
  */
-Route::get('/signin', function () {
+Route::middleware(['AuthCheck'])->get('/signin', function () {
     return view('front-layout.signin');
 });
+Route::post('auth/process', [SignInController::class, 'auth'])->name('auth');
+Route::get('auth/signout', [SignInController::class, 'signout'])->name('signout');
+
+/**
+ * Dashboard
+ */
+Route::middleware(['AuthCheck'])->get('dashboard', [SignInController::class, 'dashboard']);
 
 /**
  * Users
  */
-Route::prefix('users')->group(function() {
-    Route::get('/', function() {
-        return view('admin-dashboard.users.index');
-    });
+Route::middleware(['AuthCheck'])->prefix('users')->group(function() {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'createUser']);
+    Route::put('/{id_user}', [UserController::class, 'updateUser']);
+    Route::delete('/{id_user}', [UserController::class, 'deleteUser']);
 });
 
 /**
  * Warga
  */
-Route::prefix('warga')->group(function() {
-    Route::get('/', function() {
-        return view('admin-dashboard.warga.index');
-    });
-    Route::get('/tambah-warga', function() {
-        return view('admin-dashboard.warga.tambah-warga');
-    });
-    Route::get('/lihat-detil-warga', function() {
-        return view('admin-dashboard.warga.lihat-detil-warga');
-    });
+Route::middleware(['AuthCheck'])->prefix('warga')->group(function() {
+    Route::get('/', [WargaController::class, 'index']);
+    Route::get('tambah-warga', [WargaController::class, 'addCitizen']);
+    Route::post('/', [WargaController::class, 'createWarga']);
+    Route::put('/{id_kk}/status-tempat-tinggal', [WargaController::class, 'updateStatusTempatTinggal']);
+    Route::put('/{id_kk}/domisili-kartu-keluarga', [WargaController::class, 'updateDomisiliKartuKeluarga']);
+    Route::get('kartu-keluarga/{id_kk}', [WargaController::class, 'getKartuKeluarga']);
+    Route::get('kartu-keluarga/{id_kk}/tambah-anggota-keluarga', [WargaController::class, 'addAnggotaKeluarga']);
+    Route::post('kartu-keluarga/tambah-anggota-keluarga', [WargaController::class, 'createAnggotaKeluarga']);
+    Route::get('kartu-keluarga/{id_kk}/ubah-anggota-keluarga/{nik}', [WargaController::class, 'editAnggotaKeluarga']);
+    Route::put('kartu-keluarga/{id_kk}/ubah-anggota-keluarga/{nik}', [WargaController::class, 'updateAnggotaKeluarga']);
 });
 
 /**

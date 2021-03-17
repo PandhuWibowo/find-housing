@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -39,10 +40,10 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="{{ Session::get('nama') }}">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a class="d-block">{{ Session::get('nama') }}</a>
         </div>
       </div>
 
@@ -68,9 +69,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/signout">
-              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
+            <a href="/peta/cari-alamat" class="nav-link">
+              <i class="nav-icon fas fa-street-view"></i>
+              <p>Cari Alamat</p>
             </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>
@@ -105,9 +110,9 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#modal-xl">Tambah User</button>
+                <button type="button" class="btn btn-block btn-outline-primary btn-flat" data-toggle="modal" data-target="#add-user">Tambah User</button>
               </div>
-              <div class="modal fade" id="modal-xl">
+              <div class="modal fade" id="add-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -116,37 +121,38 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
-                      <form role="form">
-                        <div class="card-body">
-                          <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama">
+                    <form role="form">
+                      <div class="modal-body">
+                          <div class="card-body">
+                            <div class="form-group">
+                              <label for="nama">Nama</label>
+                              <input type="text" class="form-control" id="nama" placeholder="Nama">
+                            </div>
+                            <div class="form-group">
+                              <label for="password">Password</label>
+                              <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                              <label for="no_telp">No. Telpon</label>
+                              <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
+                            </div>
+                            <div class="form-group">
+                              <label for="jabatan">Jabatan</label>
+                              <input type="text" class="form-control" id="jabatan" placeholder="Jabatan">
+                            </div>
+                            <div class="form-group">
+                              <label>Alamat</label>
+                              <textarea class="form-control" rows="3" placeholder="Alamat" id="alamat"></textarea>
+                            </div>
                           </div>
-                          <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
-                          </div>
-                          <div class="form-group">
-                            <label for="no_telp">No. Telpon</label>
-                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon">
-                          </div>
-                          <div class="form-group">
-                            <label for="jabatan">Jabatan</label>
-                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan">
-                          </div>
-                          <div class="form-group">
-                            <label>Alamat</label>
-                            <textarea class="form-control" rows="3" placeholder="Alamat"></textarea>
-                          </div>
-                        </div>
-                        <!-- /.card-body -->
-                      </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                          <!-- /.card-body -->
+
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
+                      </div>
+                    </form>
                   </div>
                   <!-- /.modal-content -->
                 </div>
@@ -164,69 +170,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat" data-toggle="modal" data-target="#modal-xl-edit">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat" data-toggle="modal" data-target="#modal-xl-remove">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>1234567890</td>
-                    <td>Super Admin</td>
-                    <td>
-                      <button type="button" class="btn btn-block btn-outline-secondary btn-flat">Ubah</button>
-                      <button type="button" class="btn btn-block btn-outline-danger btn-flat">Hapus</button>
-                    </td>
-                  </tr>
+                  @foreach($users as $row)
+                    <tr>
+                      <td>{{ $row->nama }}</td>
+                      <td>{{ $row->no_telp }}</td>
+                      <td>{{ $row->jabatan }}</td>
+                      <td>
+                        <a class="editUser btn btn-block btn-outline-secondary btn-flat" data-id_user="{{ $row->id_user }}" data-nama="{{ $row->nama }}" data-no_telp="{{ $row->no_telp }}" data-jabatan="{{ $row->jabatan }}" data-alamat="{{ $row->alamat }}">Ubah</a>
+                        <a class="removeUser btn btn-block btn-outline-danger btn-flat" data-id_user="{{ $row->id_user }}">Hapus</a>
+                      </td>
+                    </tr>
+                  @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
@@ -239,7 +193,7 @@
                 </table>
               </div>
               <!-- /.card-body -->
-              <div class="modal fade" id="modal-xl-edit">
+              <div class="modal fade" id="update-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -248,39 +202,40 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
-                      <form role="form">
+                    <form role="form">
+                      <div class="modal-body">
                         <div class="card-body">
+                          <input type="hidden" name="ubahIdUser" id="ubahIdUser">
                           <div class="form-group">
                             <label for="nama">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama" value="John Doe">
+                            <input type="text" class="form-control" id="ubahNama" placeholder="Nama">
                           </div>
                           <div class="form-group">
                             <label for="no_telp">No. Telpon</label>
-                            <input type="text" class="form-control" id="no_telp" placeholder="No. Telpon" value="1234567890">
+                            <input type="text" class="form-control" id="ubahNoTelp" placeholder="No. Telpon">
                           </div>
                           <div class="form-group">
                             <label for="jabatan">Jabatan</label>
-                            <input type="text" class="form-control" id="jabatan" placeholder="Jabatan" value="Super Admin">
+                            <input type="text" class="form-control" id="ubahJabatan" placeholder="Jabatan">
                           </div>
                           <div class="form-group">
                             <label>Alamat</label>
-                            <textarea class="form-control" rows="3" placeholder="Alamat">Jl. Pahlawan Gang Merdeka</textarea>
+                            <textarea class="form-control" rows="3" placeholder="Alamat" id="ubahAlamat"></textarea>
                           </div>
                         </div>
                         <!-- /.card-body -->
-                      </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="btn-ubah">Simpan</button>
+                      </div>
+                    </form>
                   </div>
                   <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
               </div>
-              <div class="modal fade" id="modal-xl-remove">
+              <div class="modal fade" id="remove-user">
                 <div class="modal-dialog modal-xl">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -290,11 +245,12 @@
                       </button>
                     </div>
                     <div class="modal-body">
+                      <input type="hidden" name="removeIdUser" id="removeIdUser">
                       Anda yakin ingin menghapusnya?
                     </div>
                     <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      <button type="button" class="btn btn-primary">Simpan</button>
+                      <button type="submit" class="btn btn-primary" id="btn-hapus">Hapus</button>
                     </div>
                   </div>
                   <!-- /.modal-content -->
@@ -359,6 +315,196 @@
       "responsive": true,
     });
   });
+</script>
+<script>
+  function csrfProtection() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  }
+  $(document).ready(function() {
+    // Save new user
+    $("#btn-save").on('click', function(e) {
+      e.preventDefault()
+
+      const nama = $("#nama").val()
+      const noTelp = $("#no_telp").val()
+      const alamat = $("#alamat").val()
+      const password = $("#password").val()
+      const jabatan = $("#jabatan").val()
+
+      try {
+        csrfProtection()
+        if (!nama || typeof nama !== 'string') {
+          alert('Nama harus tidak boleh string kosong')
+          return
+        }
+        if (!noTelp || typeof noTelp !== 'string') {
+          alert('No Telepon harus tidak boleh string kosong')
+          return
+        }
+        if (!alamat || typeof alamat !== 'string') {
+          alert('Alamat harus tidak boleh string kosong')
+          return
+        }
+        if (!password || typeof password !== 'string') {
+          alert('Password harus tidak boleh string kosong')
+          return
+        }
+        if (!jabatan || typeof jabatan !== 'string') {
+          alert('Jabatan harus tidak boleh string kosong')
+          return
+        }
+
+        $.ajax({
+            url: '/users',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {nama, no_telp: noTelp, alamat, password, jabatan},
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 201) {
+                alert(response.message)
+                const addModal = $('#add-user')
+                addModal.modal('hide')
+                location.reload()
+              } else alert(response.message)
+              return
+            }
+          })
+      } catch (error) {
+        console.error(error)
+        alert(error)
+        return
+      }
+    })
+    // Show User to Edit Modal
+    // Edit Modal
+    $('.editUser').on('click', function() {
+      // Dari Data Table
+      const idUser = $(this).data('id_user')
+      const nama = $(this).data('nama')
+      const noTelp = $(this).data('no_telp')
+      const jabatan = $(this).data('jabatan')
+      const alamat = $(this).data('alamat')
+
+      // Ke Modal
+      $('#ubahIdUser').val(idUser)
+      $('#ubahNama').val(nama)
+      $('#ubahNoTelp').val(noTelp)
+      $('#ubahJabatan').val(jabatan)
+      $('textarea#ubahAlamat').val(alamat)
+      const editModal = $('#update-user')
+      editModal.modal('show')
+    })
+
+    // Edit User
+    $('#btn-ubah').on('click', function(e) {
+        e.preventDefault()
+
+        const idUser = $('#ubahIdUser').val()
+        const nama = $('#ubahNama').val()
+        const noTelp = $('#ubahNoTelp').val()
+        const jabatan = $('#ubahJabatan').val()
+        const alamat = $('textarea#ubahAlamat').val()
+
+        try {
+          if (!idUser || typeof idUser !== 'string') alert('Id User harus tidak boleh string kosong')
+          if (!nama || typeof nama !== 'string') alert('Nama harus tidak boleh string kosong')
+          if (!noTelp || typeof noTelp !== 'string') alert('Nomor Telepon harus tidak boleh kosong')
+          if (!jabatan || typeof jabatan !== 'string') alert('Jabatan harus tidak boleh string kosong')
+          if (!alamat || typeof alamat !== 'string') alert('Alamat harus tidak boleh string kosong')
+
+          csrfProtection()
+          $.ajax({
+            url: `/users/${idUser}`,
+            type: 'PUT',
+            dataType: 'json',
+            async: true,
+            data: {
+              nama,
+              no_telp: noTelp,
+              jabatan,
+              alamat
+            },
+            error: function (err) {
+              console.error(err)
+              alert(err)
+              return
+            },
+            success: function (response) {
+              console.log(response)
+              if (response.status === 200) {
+                alert(response.message)
+                const editModal = $('#editUser')
+                editModal.modal('hide')
+                location.reload()
+              } else alert(response.message)
+              return
+            }
+          })
+        } catch (err) {
+          console.error(err)
+          alert(err)
+          return
+        }
+      })
+
+    // Show Modal for Deleted
+    $('.removeUser').on('click', function() {
+      const idUser = $(this).data('id_user')
+      $('#removeIdUser').val(idUser)
+      const deleteModal = $('#remove-user')
+      deleteModal.modal('show')
+    })
+
+    // Delete User
+    $('#btn-hapus').on('click', function(e) {
+      e.preventDefault()
+
+      const id = $('#removeIdUser').val()
+
+      try {
+        if (!id || typeof id !== 'string') alert('Id harus tidak boleh string kosong')
+
+        csrfProtection()
+        $.ajax({
+          url: `/users/${id}`,
+          type: 'DELETE',
+          dataType: 'json',
+          async: true,
+          data: {},
+          error: function (err) {
+            console.error(err)
+            alert(err)
+            return
+          },
+          success: function (response) {
+            console.log(response)
+            if (response.status === 200) {
+              alert(response.message)
+              const deleteModal = $('#remove-user')
+              deleteModal.modal('hide')
+              location.reload()
+            } else alert(response.message)
+            return
+          }
+        })
+      } catch (err) {
+        console.error(err)
+        alert(err)
+        return
+      }
+    })
+  })
 </script>
 </body>
 </html>

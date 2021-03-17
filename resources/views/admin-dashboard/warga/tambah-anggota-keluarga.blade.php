@@ -93,12 +93,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Warga</h1>
+            <h1>Anggota Keluarga</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-              <li class="breadcrumb-item active">Warga</li>
+              <li class="breadcrumb-item active">Anggota Keluarga</li>
             </ol>
           </div>
         </div>
@@ -117,19 +117,19 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="no_kk">No. Kartu Keluarga</label>
-                    <input type="text" class="form-control" id="no_kk" placeholder="No. Kartu Keluarga">
+                    <input type="text" class="form-control" id="no_kk" placeholder="No. Kartu Keluarga" value="{{ $kartuKeluarga->id_kk }}" readonly>
                   </div>
                   <div class="form-group">
                     <label for="nik_kepala_keluarga">NIK Kepala Keluarga</label>
-                    <input type="text" class="form-control" id="nik_kepala_keluarga" placeholder="NIK Kepala Keluarga">
-                  </div>
-                  <div class="form-group">
-                    <label for="domisili_kartu_keluarga">Domisili</label>
-                    <input type="text" class="form-control" id="domisili_kartu_keluarga" placeholder="Domisili">
+                    <input type="text" class="form-control" id="nik_kepala_keluarga" placeholder="NIK Kepala Keluarga" value="{{ $kartuKeluarga->nik_kepala_keluarga }}" readonly>
                   </div>
                   <div class="form-group">
                     <label for="status_tempat_tinggal">Status Tempat Tinggal</label>
-                    <input type="text" class="form-control" id="status_tempat_tinggal" placeholder="Status Tempat Tinggal">
+                    <input type="text" class="form-control" id="status_tempat_tinggal" placeholder="Status Tempat Tinggal" readonly value="{{ $kartuKeluarga->status_tempat_tinggal }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="domisili_kartu_keluarga">Domisili</label>
+                    <input type="text" class="form-control" id="domisili_kartu_keluarga" readonly placeholder="Domisili" value="{{ $kartuKeluarga->domisili }}">
                   </div>
                 </div>
                 <div class="card-body">
@@ -239,8 +239,6 @@
       e.preventDefault()
 
       const noKK = $('#no_kk').val()
-      const nikKepalaKeluarga = $('#nik_kepala_keluarga').val()
-      const statusTempatTinggal = $('#status_tempat_tinggal').val()
       const nik = $('#nik').val()
       const nama = $("#nama").val()
       const noTelp = $("#no_telp").val()
@@ -250,29 +248,16 @@
       const pekerjaan = $("#pekerjaan").val()
       const statusKeluarga = $('#status_keluarga').val()
       const statusPernikahan = $('#status_pernikahan').val()
-      const domisiliKartuKeluarga = $('#domisili_kartu_keluarga').val()
-      const domisili = $('#domisili').val()
+      const domisili = $("#domisili").val()
 
       try {
         csrfProtection()
+        if (!domisili || typeof domisili !== 'string') {
+          alert('Domisili harus tidak boleh string kosong')
+          return
+        }
         if (!noKK || typeof noKK !== 'string') {
           alert('No. Kartu Keluarga harus tidak boleh string kosong')
-          return
-        }
-        if (!nikKepalaKeluarga || typeof nikKepalaKeluarga !== 'string') {
-          alert('NIK Kepala Keluarga harus tidak boleh string kosong')
-          return
-        }
-        if (!domisiliKartuKeluarga || typeof domisiliKartuKeluarga !== 'string') {
-          alert('Domisili Kartu Keluarga harus tidak boleh string kosong')
-          return
-        }
-        if (!domisili || typeof domisili !== 'string') {
-          alert('Domisili Warga harus tidak boleh string kosong')
-          return
-        }
-        if (!statusTempatTinggal || typeof statusTempatTinggal !== 'string') {
-          alert('Status Tempat Tinggal harus tidak boleh string kosong')
           return
         }
         if (!nik || typeof nik !== 'string') {
@@ -312,7 +297,7 @@
           return
         }
         $.ajax({
-            url: '/warga',
+            url: '/warga/kartu-keluarga/tambah-anggota-keluarga',
             type: 'POST',
             dataType: 'json',
             async: true,
@@ -321,15 +306,12 @@
               no_telp: noTelp,
               alamat,
               id_kk: noKK,
-              nik_kepala_keluarga: nikKepalaKeluarga,
-              status_tempat_tinggal: statusTempatTinggal,
               nik,
               status_keluarga: statusKeluarga,
               pendidikan,
               pekerjaan,
               tanggal_lahir: tanggalLahir,
               status_pernikahan: statusPernikahan,
-              domisili_kartu_keluarga: domisiliKartuKeluarga,
               domisili
             },
             error: function (err) {
@@ -341,7 +323,7 @@
               console.log(response)
               if (response.status === 201) {
                 alert(response.message)
-                window.location.href="/warga"
+                window.location.href=`/warga/kartu-keluarga/${noKK}`
               } else alert(response.message)
               return
             }
