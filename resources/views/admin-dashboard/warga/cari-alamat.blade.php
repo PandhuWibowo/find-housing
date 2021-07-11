@@ -148,7 +148,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="search">Search Location</label>
-                    <select name="autocomplete" id="autocomplete" class="form-control">
+                    <select name="autocomplete" id="autocomplete" class="form-control" style="width: 100%">
                       @foreach($warga as $row)
                         <option value=""></option>
                         <option value="{{ $row->latitude }}|{{ $row->longitude }}">{{ $row->alamat }}</option>
