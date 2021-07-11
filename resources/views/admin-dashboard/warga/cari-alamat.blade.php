@@ -108,9 +108,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/signout">
-              <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
-            </a>
+            <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>
       </nav>

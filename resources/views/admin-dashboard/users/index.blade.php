@@ -75,6 +75,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/reports" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>Reports</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('signout') }}" class="btn btn-block btn-outline-danger btn-flat">Keluar</a>
           </li>
         </ul>

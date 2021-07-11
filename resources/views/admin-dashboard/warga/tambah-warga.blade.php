@@ -97,6 +97,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/reports" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>Reports</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/signout">
               <button type="button" class="btn btn-block btn-outline-danger btn-flat">Sign Out</button>
             </a>

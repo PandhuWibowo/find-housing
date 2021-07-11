@@ -5,6 +5,7 @@ use App\Http\Controllers\SignInController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\CariAlamatController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function() {
     return redirect('signin');
@@ -62,4 +63,12 @@ Route::prefix('peta')->group(function() {
  */
 Route::get('/cari-alamat', function() {
     return view('front-layout.cari-alamat');
+});
+
+/**
+ * Reports
+ */
+Route::prefix('reports')->group(function() {
+    Route::get('/', [ReportController::class, 'index']);
+    Route::post('excel/family', [ReportController::class, 'getFamily']);
 });
