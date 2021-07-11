@@ -13,4 +13,11 @@ class CariAlamatController extends Controller
             'warga' => $warga
         ]);
     }
+
+    function searchAddress() {
+        $warga = Warga::all();
+        return view('front-layout.cari-alamat', [
+            'warga' => $warga
+        ]);
+    }
 }

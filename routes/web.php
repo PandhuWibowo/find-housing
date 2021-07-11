@@ -61,9 +61,7 @@ Route::prefix('peta')->group(function() {
 /**
  * Peta - Tanpa Login
  */
-Route::get('/cari-alamat', function() {
-    return view('front-layout.cari-alamat');
-});
+Route::get('/cari-alamat', [CariAlamatController::class, 'searchAddress']);
 
 /**
  * Reports
