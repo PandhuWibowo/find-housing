@@ -19,6 +19,28 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <style>
+    #map {
+      height: 700px;
+      width: 100%
+    }
+
+    #autocomplete {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 800px;
+      margin-top: 10px;
+    }
+
+    #autocomplete:focus {
+      border-color: #4d90fe;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -178,6 +200,19 @@
                       <option>Cerai Mati</option>
                     </select>
                   </div>
+                  <div class="form-group">
+                    <label for="maps">Maps</label>
+                    <input type="text" name="autocomplete" id="autocomplete" class="form-control" placeholder="Choose Location">
+                    <div id="map"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="text" class="form-control" id="latitude" placeholder="Latitude" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="text" class="form-control" id="longitude" placeholder="Longitude" readonly>
+                  </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -225,6 +260,10 @@
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDwuNWNWNttuPVWT-TKQGniO4tXPN2kGU&libraries=places&callback=initMap">
+</script>
+<script src="{!! asset('assets/app-maps.js') !!}"></script>
 <script>
   function csrfProtection() {
     $.ajaxSetup({
@@ -252,7 +291,8 @@
       const statusPernikahan = $('#status_pernikahan').val()
       const domisiliKartuKeluarga = $('#domisili_kartu_keluarga').val()
       const domisili = $('#domisili').val()
-
+      const latitude = $('#latitude').val()
+      const longitude = $('#longitude').val()
       try {
         csrfProtection()
         if (!noKK || typeof noKK !== 'string') {
@@ -311,6 +351,15 @@
           alert('Status Pernikahan harus tidak boleh string kosong')
           return
         }
+        if (!latitude) {
+          alert('Latitude harus diisi')
+          return
+        }
+        if (!longitude) {
+          alert('Longitude harus diisi')
+          return
+        }
+
         $.ajax({
             url: '/warga',
             type: 'POST',
@@ -330,7 +379,9 @@
               tanggal_lahir: tanggalLahir,
               status_pernikahan: statusPernikahan,
               domisili_kartu_keluarga: domisiliKartuKeluarga,
-              domisili
+              domisili,
+              latitude,
+              longitude
             },
             error: function (err) {
               console.error(err)

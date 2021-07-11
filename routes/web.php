@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SignInController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\CariAlamatController;
 
 Route::get('/', function() {
     return redirect('signin');
@@ -53,9 +54,7 @@ Route::middleware(['AuthCheck'])->prefix('warga')->group(function() {
  * Peta
  */
 Route::prefix('peta')->group(function() {
-    Route::get('/cari-alamat', function() {
-        return view('admin-dashboard.warga.cari-alamat');
-    });
+    Route::get('/cari-alamat', [CariAlamatController::class, 'index']);
 });
 
 /**

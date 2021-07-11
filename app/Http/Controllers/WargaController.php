@@ -52,6 +52,8 @@ class WargaController extends Controller
             $newWarga->status_pernikahan = $request->status_pernikahan;
             $newWarga->tgl_lahir = $request->tanggal_lahir;
             $newWarga->domisili = $request->domisili;
+            $newWarga->latitude = $request->latitude;
+            $newWarga->longitude = $request->longitude;
 
             $newDetilKK = new DetilKK;
             $newDetilKK->id_kk = $request->id_kk;
